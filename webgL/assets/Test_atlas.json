@@ -1,0 +1,19 @@
+﻿{"frames": {
+
+"A-Spiria.png":
+{
+	"frame": {"x":0,"y":0,"w":210,"h":215},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":210,"h":215},
+	"sourceSize": {"w":210,"h":215}
+}},
+"meta": {
+	"app": "Adobe Animate",
+	"version": "15.1.1.13",
+	"image": "Test_atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":256,"h":256},
+	"scale": "1"
+}
+}

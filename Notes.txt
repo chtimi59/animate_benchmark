@@ -1,0 +1,4 @@
+Warnings generated while copying/importing in Test.fla:
+* Text cannot be imported in WebGL (Preview) document.
+
+New WebGL document generated successfully!
