@@ -1,0 +1,7 @@
+/Debug
+*.sdf
+*.suo
+*.opensdf
+*.user
+/client
+/client.o
