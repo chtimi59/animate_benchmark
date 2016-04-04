@@ -1,44 +1,62 @@
 ﻿package {
     import flash.display.MovieClip;
     import flash.text.*;
+	import flash.events.*;
     import flash.system.*;
+	import flash.utils.*;
     import flash.display.Sprite;
     import flash.geom.Rectangle; 
     import flash.media.Sound;
+	
+	import anim.*;
     
-    public class Main extends MovieClip
+    public class Main extends MovieClip implements anim.IClientServices
     {
-         
-         var frames:int=0;
-         var prevTimer:Number=0;
-         var curTimer:Number=0;
-         
-         function fps(e:Event):void {
-            frames+=1;            
-            if(curTimer-prevTimer>=1000){
-                curTimer=getTimer();
-                this.title.text = Math.round(frames*1000/(curTimer-prevTimer)));
-                prevTimer=curTimer;
-                frames=0;
-            }
+ 		 public static var MAX_PARTICLES:Number = 500;
+         public static var STAGE_WIDTH:Number;
+		 public static var STAGE_HEIGHT:Number;
+		 public static var MAX_VELOCITY:Number = 500;
+		 public static var PARTICLE_RADIUS:Number = 15;
+
+		 var mClient:anim.Client;
+		 public function onReceived(evt:Object) {
+	     }
+		
+         var mPrevTimer:Number=0;
+         private function fps(e:Event):void {
+			var t:Number=getTimer();
+			var elapsed = t-mPrevTimer;
+			this.mPrevTimer=t;
+			if (this.mPrevTimer==0) return;
+			this.title.text = String(Math.round(1000/elapsed))+"fps";
+			 
+			for (var i:int=0; i<MAX_PARTICLES; i++) { 
+				var p:anim.Particule = mParticules[i];
+				p.draw(elapsed)
+			}
           }
 
+		  var mParticules:Array = new Array();
           public function Main() {
             trace("start");
-            this.title.text="...";			
-            this.removeChild(this.placeholder);
+            this.title.text="...";	
+			this.removeChild(this.placeholder);
 			this.addEventListener(Event.ENTER_FRAME,fps);
-			/*for (var j:int=0; j<10; j=j+5) {
-				for (var i:int=0; i<10; i=i+5)
-				{
-					var t = new A();
-					t.x = i;
-					t.y = j;
-					t.width = 2;
-					t.height = 2;
-					this.addChild(t);
-				}
-			}*/
+			var container = new MovieClip();
+			this.addChild(container);
+			this.swapChildren(container, title);
+			Main.STAGE_WIDTH = stage.stageWidth;
+			Main.STAGE_HEIGHT = stage.stageHeight;
+			
+			mClient = new anim.Client("192.168.0.115", 8081, this);
+			
+			for (var i:int=0; i<MAX_PARTICLES; i++) {
+				var p = new anim.Particule();
+				this.mParticules.push(p);
+				container.addChild(p);
+				p.gotoAndPlay(Math.round(20*Math.random()));
+			}	
+			
          }
     }
 }
